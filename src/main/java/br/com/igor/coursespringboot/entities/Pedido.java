@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import br.com.igor.coursespringboot.entities.enums.StatusPedido;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,8 @@ public class Pedido implements Serializable {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
 	private Instant momento;
+	
+	private Integer statusPedido;
 
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
@@ -34,10 +37,11 @@ public class Pedido implements Serializable {
 	public Pedido() {
 	}
 
-	public Pedido(Long id, Instant momento, Usuario cliente) {
+	public Pedido(Long id, Instant momento, StatusPedido statusPedido, Usuario cliente) {
 		super();
 		this.id = id;
 		this.momento = momento;
+		setStatusPedido(statusPedido);
 		this.cliente = cliente;
 	}
 
@@ -55,6 +59,16 @@ public class Pedido implements Serializable {
 
 	public void setMomento(Instant momento) {
 		this.momento = momento;
+	}
+	
+	public StatusPedido getStatusPedido() {
+		return StatusPedido.valueOf(statusPedido);
+	}
+
+	public void setStatusPedido(StatusPedido statusPedido) {
+		if (statusPedido != null) {
+			this.statusPedido = statusPedido.getCodigo();
+		}		
 	}
 
 	public Usuario getCliente() {
