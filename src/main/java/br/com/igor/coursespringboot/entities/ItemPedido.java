@@ -3,6 +3,8 @@ package br.com.igor.coursespringboot.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import br.com.igor.coursespringboot.entities.pk.ItemPedidoPk;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
@@ -15,7 +17,7 @@ public class ItemPedido implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private ItemPedidoPk id;
+	private ItemPedidoPk id = new ItemPedidoPk();
 	
 	private Integer quantidade;
 	private Double preco;
@@ -31,6 +33,7 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
