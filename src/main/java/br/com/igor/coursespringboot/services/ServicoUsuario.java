@@ -12,6 +12,7 @@ import br.com.igor.coursespringboot.entities.Usuario;
 import br.com.igor.coursespringboot.repositories.RepositorioUsuario;
 import br.com.igor.coursespringboot.services.exceptions.DatabaseException;
 import br.com.igor.coursespringboot.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ServicoUsuario {
@@ -43,9 +44,14 @@ public class ServicoUsuario {
 	}
 	
 	public Usuario atualizar(Long id, Usuario obj) {
-		Usuario entidade = repositorio.getReferenceById(id);
-		atualizarDados(entidade, obj);
-		return repositorio.save(entidade);
+		try {
+			Usuario entidade = repositorio.getReferenceById(id);
+			atualizarDados(entidade, obj);
+			return repositorio.save(entidade);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+		
 	}
 
 	private void atualizarDados(Usuario entidade, Usuario obj) {
